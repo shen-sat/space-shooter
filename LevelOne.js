@@ -51,39 +51,6 @@ class LevelOne extends Phaser.Scene {
 
 	update() {	
 		if (this.keys.right.isDown)	{
-			this.rightSpeedFactor = 0.1 + Math.min(1.4, Math.max(0, this.rightSpeedFactor));
-			this.leftSpeedFactor = Math.min(1.4, Math.max(0.04, this.leftSpeedFactor)) - 0.04;
-			this.isLeftAnimationFinished = false; 
-			if (this.isRightAnimationFinished == false) {
-				this.ship.anims.play('right', true);	
-			} else {
-				this.ship.anims.play('far-right', true);	
-			};
-			if (this.ship.anims.getCurrentKey() == 'right' && this.ship.anims.getProgress() == 1) {
-				this.isRightAnimationFinished = true;
-			}
-		} else if (this.keys.left.isDown)	{
-			this.leftSpeedFactor = 0.1 + Math.min(1.4, Math.max(0, this.leftSpeedFactor));
-			this.rightSpeedFactor = Math.min(1.4, Math.max(0.04, this.rightSpeedFactor)) - 0.04;
-			this.isRightAnimationFinished = false; 
-			if (this.isLeftAnimationFinished == false) {
-				this.ship.anims.play('left', true);	
-			} else {
-				this.ship.anims.play('far-left', true);	
-			};
-			if (this.ship.anims.getCurrentKey() == 'left' && this.ship.anims.getProgress() == 1) {
-				this.isLeftAnimationFinished = true;
-			}
-		} else {
-			this.ship.anims.play('idle', true);
-			this.isRightAnimationFinished = false;
-			this.isLeftAnimationFinished = false;
-			this.leftSpeedFactor = Math.min(1.4, Math.max(0.04, this.leftSpeedFactor)) - 0.04;
-			this.rightSpeedFactor = Math.min(1.4, Math.max(0.04, this.rightSpeedFactor)) - 0.04;
-			
-		}
-
-		this.ship.x += this.rightSpeedFactor;
-		this.ship.x -= this.leftSpeedFactor;
+		};
 	};
 }
