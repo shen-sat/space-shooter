@@ -1,7 +1,7 @@
 const config = {
 	type: Phaser.AUTO,
-	width: 256,
-	height: 272,
+	width: 256 * 2,
+	height: 272 * 2,
 	pixelArt: true,
 	parent: 'foobar',
 	autoCenter: Phaser.Scale.Center.CENTER_BOTH,
