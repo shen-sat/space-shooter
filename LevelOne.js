@@ -22,19 +22,38 @@ class LevelOne extends Phaser.Scene {
 			repeat: -1
 		});
 		//movement
-		this.speed = 0;
-		this.speedFactor = 0.1;
-		this.speedUpperLimit = 1.5;
-		this.speedLowerLimit = -1.5;
-		this.compareMode = false;
+		this.lateralSpeed = 0;
+		this.verticalSpeed = 0;
+		this.speedFactor = 0.5;
+		this.speedUpperLimit = 4;
+		this.speedLowerLimit = -1 * this.speedUpperLimit;
+		this.brakeSpeed = 0.15;
 	};
 
 	update() {	
 		if (this.keys.right.isDown)	{
-			this.speed = Math.min(this.speedUpperLimit, this.speed) + this.speedFactor;
+			this.lateralSpeed = Math.min(this.speedUpperLimit, this.lateralSpeed) + this.speedFactor;
 		} else if (this.keys.left.isDown) {
-			this.speed = Math.max(this.speedLowerLimit, this.speed) - this.speedFactor;
+			this.lateralSpeed = Math.max(this.speedLowerLimit, this.lateralSpeed) - this.speedFactor;
+		} else {
+			if (this.lateralSpeed > 0) {
+				this.lateralSpeed = Math.max(0,(this.lateralSpeed - this.brakeSpeed));
+			} else {
+				this.lateralSpeed = Math.min(0,(this.lateralSpeed + this.brakeSpeed));
+			};
 		};
-		this.ship.x += this.speed;
+		if (this.keys.down.isDown)	{
+			this.verticalSpeed = Math.min(this.speedUpperLimit, this.verticalSpeed) + this.speedFactor;
+		} else if (this.keys.up.isDown) {
+			this.verticalSpeed = Math.max(this.speedLowerLimit, this.verticalSpeed) - this.speedFactor;
+		} else {
+			if (this.verticalSpeed > 0) {
+				this.verticalSpeed = Math.max(0,(this.verticalSpeed - this.brakeSpeed));
+			} else {
+				this.verticalSpeed = Math.min(0,(this.verticalSpeed + this.brakeSpeed));
+			};
+		};
+		this.ship.y += this.verticalSpeed;
+		this.ship.x += this.lateralSpeed;
 	};
 }
