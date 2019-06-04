@@ -6,7 +6,7 @@ class LevelOne extends Phaser.Scene {
 
 	preload() {
 		this.load.image('desert', 'assets/desert-large.png');
-		this.load.image('ship', 'assets/title-screen.png')
+		this.load.image('ship', 'assets/red.png')
 		// this.load.spritesheet('ship', 'assets/ship_spritesheet.png', { frameWidth: 16, frameHeight: 24 }, 10);
 	}
 
