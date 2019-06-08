@@ -12,7 +12,7 @@ class LevelOne extends Phaser.Scene {
 
 	create() {
 		this.keys = this.input.keyboard.createCursorKeys();
-		this.image = this.add.image(256, 272, 'desert');
+		this.background = this.add.tileSprite(256, 272, 512, 544, 'desert');
 		this.ship = this.add.image(256, 272, 'ship');
 		//animations
 		this.anims.create({
@@ -28,6 +28,7 @@ class LevelOne extends Phaser.Scene {
 		this.speedUpperLimit = 4;
 		this.speedLowerLimit = -1 * this.speedUpperLimit;
 		this.brakeSpeed = 0.15;
+		this.scrollFactor = 1;
 	};
 
 	update() {	
@@ -55,5 +56,6 @@ class LevelOne extends Phaser.Scene {
 		};
 		this.ship.y += this.verticalSpeed;
 		this.ship.x += this.lateralSpeed;
+		this.background.tilePositionY -= this.scrollFactor;
 	};
 }
