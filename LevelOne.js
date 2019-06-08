@@ -28,10 +28,13 @@ class LevelOne extends Phaser.Scene {
 		this.speedUpperLimit = 4;
 		this.speedLowerLimit = -1 * this.speedUpperLimit;
 		this.brakeSpeed = 0.15;
-		this.scrollFactor = 1;
+		this.resetScrollFactor = 2;
+		this.accelerateScrollFactor = 1;
+		this.brakeScrollFactor = 0.5;
 	};
 
-	update() {	
+	update() {
+		this.scrollFactor = this.resetScrollFactor;	
 		if (this.keys.right.isDown)	{
 			this.lateralSpeed = Math.min(this.speedUpperLimit, this.lateralSpeed) + this.speedFactor;
 		} else if (this.keys.left.isDown) {
@@ -45,8 +48,10 @@ class LevelOne extends Phaser.Scene {
 		};
 		if (this.keys.down.isDown)	{
 			this.verticalSpeed = Math.min(this.speedUpperLimit, this.verticalSpeed) + this.speedFactor;
+			this.scrollFactor -= this.brakeScrollFactor;
 		} else if (this.keys.up.isDown) {
 			this.verticalSpeed = Math.max(this.speedLowerLimit, this.verticalSpeed) - this.speedFactor;
+			this.scrollFactor += this.accelerateScrollFactor;
 		} else {
 			if (this.verticalSpeed > 0) {
 				this.verticalSpeed = Math.max(0,(this.verticalSpeed - this.brakeSpeed));
