@@ -11,6 +11,7 @@ class LevelOne extends Phaser.Scene {
 	}
 
 	create() {
+		this.gameWindowWidth = this.sys.game.config.width;
 		this.keys = this.input.keyboard.createCursorKeys();
 		this.background = this.add.tileSprite(256, 272, 512, 544, 'desert');
 		this.ship = this.add.image(256, 272, 'ship');
@@ -59,8 +60,20 @@ class LevelOne extends Phaser.Scene {
 				this.verticalSpeed = Math.min(0,(this.verticalSpeed + this.brakeSpeed));
 			};
 		};
-		this.ship.y += this.verticalSpeed;
-		this.ship.x += this.lateralSpeed;
+		this.ship.y += this.verticalSpeed; 
+		
+		if (this.ship.x - (this.ship.width/2) + this.lateralSpeed > 0 && this.ship.x + (this.ship.width/2) + this.lateralSpeed < this.gameWindowWidth) {
+			this.ship.x += this.lateralSpeed;
+		} else {
+			this.lateralSpeed = 0;
+			if (this.gameWindowWidth - this.ship.x > (this.gameWindowWidth/2)) {
+				this.ship.x = 0 + this.ship.width/2; 	
+			} else {
+				this.ship.x = this.gameWindowWidth - this.ship.width/2;
+			}
+			
+		}
 		this.background.tilePositionY -= this.scrollFactor;
+		
 	};
 }
