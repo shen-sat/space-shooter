@@ -10,6 +10,8 @@ class LevelOne extends Phaser.Scene {
 		// this.load.spritesheet('ship', 'assets/ship_spritesheet.png', { frameWidth: 16, frameHeight: 24 }, 10);
 	}
 
+	
+
 	create() {
 		this.gameWindowWidth = this.sys.game.config.width;
 		this.keys = this.input.keyboard.createCursorKeys();
@@ -35,6 +37,8 @@ class LevelOne extends Phaser.Scene {
 	};
 
 	update() {
+		this.shipLeftEdge = this.ship.x - (this.ship.width/2);
+		this.shipRightEdge = this.ship.x + (this.ship.width/2);
 		this.scrollFactor = this.resetScrollFactor;	
 		if (this.keys.right.isDown)	{
 			this.lateralSpeed = Math.min(this.speedUpperLimit, this.lateralSpeed) + this.speedFactor;
@@ -60,20 +64,14 @@ class LevelOne extends Phaser.Scene {
 				this.verticalSpeed = Math.min(0,(this.verticalSpeed + this.brakeSpeed));
 			};
 		};
-		this.ship.y += this.verticalSpeed; 
 		
-		if (this.ship.x - (this.ship.width/2) + this.lateralSpeed > 0 && this.ship.x + (this.ship.width/2) + this.lateralSpeed < this.gameWindowWidth) {
-			this.ship.x += this.lateralSpeed;
-		} else {
-			this.lateralSpeed = 0;
-			if (this.gameWindowWidth - this.ship.x > (this.gameWindowWidth/2)) {
-				this.ship.x = 0 + this.ship.width/2; 	
-			} else {
-				this.ship.x = this.gameWindowWidth - this.ship.width/2;
-			}
-			
-		}
+		this.ship.y += this.verticalSpeed; 
+		this.shipWithinGameWindow() ? this.ship.x += this.lateralSpeed : this.lateralSpeed = 0;
 		this.background.tilePositionY -= this.scrollFactor;
 		
+	};
+
+	shipWithinGameWindow() {
+		return this.shipLeftEdge + this.lateralSpeed > 0 && this.shipRightEdge + this.lateralSpeed < this.gameWindowWidth;
 	};
 }
