@@ -14,6 +14,7 @@ class LevelOne extends Phaser.Scene {
 
 	create() {
 		this.gameWindowWidth = this.sys.game.config.width;
+		this.gameWindowHeight = this.sys.game.config.height;
 		this.keys = this.input.keyboard.createCursorKeys();
 		this.background = this.add.tileSprite(256, 272, 512, 544, 'desert');
 		this.ship = this.add.image(256, 272, 'ship');
@@ -37,8 +38,10 @@ class LevelOne extends Phaser.Scene {
 	};
 
 	update() {
-		this.shipLeftEdge = this.ship.x - (this.ship.width/2);
-		this.shipRightEdge = this.ship.x + (this.ship.width/2);
+		this.shipLeftEdge = this.ship.x - this.ship.width/2;
+		this.shipRightEdge = this.ship.x + this.ship.width/2;
+		this.shipTopEdge = this.ship.y - this.ship.height/2;
+		this.shipBottomEdge = this.ship.y + this.ship.height/2 - 16;
 		this.scrollFactor = this.resetScrollFactor;	
 		if (this.keys.right.isDown)	{
 			this.lateralSpeed = Math.min(this.speedUpperLimit, this.lateralSpeed) + this.speedFactor;
@@ -65,13 +68,19 @@ class LevelOne extends Phaser.Scene {
 			};
 		};
 		
-		this.ship.y += this.verticalSpeed; 
-		this.shipWithinGameWindow() ? this.ship.x += this.lateralSpeed : this.lateralSpeed = 0;
+		 
+		this.shipWithinGameWindowWidth() ? this.ship.x += this.lateralSpeed : this.lateralSpeed = 0;
+		this.shipWithinGameWindowHeight() ? this.ship.y += this.verticalSpeed : this.verticalSpeed = 0;
 		this.background.tilePositionY -= this.scrollFactor;
 		
 	};
 
-	shipWithinGameWindow() {
+	shipWithinGameWindowWidth() {
 		return this.shipLeftEdge + this.lateralSpeed > 0 && this.shipRightEdge + this.lateralSpeed < this.gameWindowWidth;
 	};
+
+	shipWithinGameWindowHeight() {
+		return this.shipTopEdge + this.verticalSpeed > 0 && this.shipBottomEdge + this.verticalSpeed < this.gameWindowHeight; 
+	};
+
 }
