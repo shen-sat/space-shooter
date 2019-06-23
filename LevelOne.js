@@ -38,11 +38,13 @@ class LevelOne extends Phaser.Scene {
 	};
 
 	update() {
+		//Work out object positions
 		this.shipLeftEdge = this.ship.x - this.ship.width/2;
 		this.shipRightEdge = this.ship.x + this.ship.width/2;
 		this.shipTopEdge = this.ship.y - this.ship.height/2;
 		this.shipBottomEdge = this.ship.y + this.ship.height/2 - 16;
 		this.scrollFactor = this.resetScrollFactor;	
+		//Controls
 		if (this.keys.right.isDown)	{
 			this.lateralSpeed = Math.min(this.speedUpperLimit, this.lateralSpeed) + this.speedFactor;
 		} else if (this.keys.left.isDown) {
@@ -67,11 +69,19 @@ class LevelOne extends Phaser.Scene {
 				this.verticalSpeed = Math.min(0,(this.verticalSpeed + this.brakeSpeed));
 			};
 		};
-		
-		 
-		this.shipWithinGameWindowWidth() ? this.ship.x += this.lateralSpeed : this.lateralSpeed = 0;
-		this.shipWithinGameWindowHeight() ? this.ship.y += this.verticalSpeed : this.verticalSpeed = 0;
+		//Kill movement if ship out of bounds
+		if (!this.shipWithinGameWindowWidth()) {
+			this.lateralSpeed = 0;	
+		};
+		if (!this.shipWithinGameWindowHeight()) {
+			this.verticalSpeed = 0;	
+		};
+		 //Apply speed to ship
+		this.ship.x += this.lateralSpeed;
+		this.ship.y += this.verticalSpeed;
+		//Scroll background
 		this.background.tilePositionY -= this.scrollFactor;
+		
 		
 	};
 
