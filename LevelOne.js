@@ -7,15 +7,18 @@ class LevelOne extends Phaser.Scene {
 	preload() {
 		this.load.image('desert', 'assets/desert-large.png');
 		this.load.image('ship', 'assets/ship-medium.png')
+		this.load.image('laser', 'assets/laser-bolt-big.png')
 		// this.load.spritesheet('ship', 'assets/ship_spritesheet.png', { frameWidth: 16, frameHeight: 24 }, 10);
 	}
 
 	
 
 	create() {
+		this.foobar = this;
 		this.gameWindowWidth = this.sys.game.config.width;
 		this.gameWindowHeight = this.sys.game.config.height;
 		this.keys = this.input.keyboard.createCursorKeys();
+		this.fireButton = this.input.keyboard.addKey('Q');
 		this.background = this.add.tileSprite(256, 272, 512, 544, 'desert');
 		this.ship = this.add.image(256, 272, 'ship');
 		//animations
@@ -35,9 +38,16 @@ class LevelOne extends Phaser.Scene {
 		this.resetScrollFactor = 2;
 		this.accelerateScrollFactor = 1;
 		this.brakeScrollFactor = 0.5;
+		this.wasFireButtonDown = false;
 	};
 
 	update() {
+		if (this.fireButton.isDown && !this.wasFireButtonDown) {
+			this.wasFireButtonDown = true;
+			console.log("Fire!");
+		} else if (this.fireButton.isUp) {
+			this.wasFireButtonDown = false;
+		};
 		//Work out object positions
 		this.shipLeftEdge = this.ship.x - this.ship.width/2;
 		this.shipRightEdge = this.ship.x + this.ship.width/2;
